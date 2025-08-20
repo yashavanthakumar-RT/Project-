@@ -1,0 +1,470 @@
+* {
+  font-family: Raleway, sans-serif;
+}
+
+body {
+  background-color: #2894dc;
+  margin: 20px;
+}
+
+/* HEADER AND NAV BAR */
+/* Background image header */
+.header {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  text-align: center;
+
+  background-image: linear-gradient(rgba(4, 9, 30, 0.6), rgba(4, 9, 30, 0.6)), url(../media/gg.);
+  background-size: cover;
+  background-position: center;
+}
+
+.headertext {
+  /* the text styles for the header */
+  /* position */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* display and padding */
+  display: inline-block;
+  /* https://w3schools.com/css/css_inline-block.asp */
+  padding: 20px;
+
+  /* colour formatting */
+  background-color: rgba(255, 255, 255, 0.6);
+  color: black;
+  max-width: 70%;
+  width: 60%;
+  text-align: center;
+}
+
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: darkslategrey;
+  position: sticky;
+  top: 251px;
+  padding: 15px 25px;
+  font-size: 0.8vw;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+  margin-bottom: 15px;
+}
+
+.navbar_container {
+  width: 3000px;
+  margin: auto;
+}
+
+ul .nav-menu {
+  width: 90%;
+  background-color: grey;
+  margin: auto;
+}
+
+@media(max-width:3000px) {
+  .navbar_container {
+    width: 100%;
+  }
+}
+
+li {
+  list-style: none;
+  display: inline-block;
+  justify-content: space-between;
+}
+
+li a {
+  margin-left: 40px;
+  text-decoration: none;
+  display: flex;
+}
+
+/* Navigation bar page choices */
+nav a {
+  color: white;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  outline: none;
+  padding: 10px 10px;
+}
+
+#current {
+  background-color: #babec2;
+  padding: 10px 10px;
+}
+
+nav a:hover {
+  background-color: #e8ebed;
+  color: darkslategray;
+  padding: 10px 10px;
+}
+
+nav a:active {
+  background-color: grey;
+  color: white;
+  padding: 10px 10px;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.bar {
+  display: block;
+  width: 30px;
+  height: 4px;
+  margin: 5px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+/* making the hamburger show up at 1300px */
+@media(max-width: 1150px) {
+  .hamburger {
+    display: block;
+  }
+
+  /* we don't want the second (middle) bar to show up when we turn the bar into an x */
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  /* now alter other two bars of hamburger to form x */
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    /* dont wanna see it */
+    top: 70px;
+    gap: 0;
+    flex-direction: column;
+    background-color: slategray;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s
+  }
+
+  .nav-item {
+    margin: 16px 0;
+
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+}
+
+/* LINK & HEADER TEXT FORMATTING*/
+a {
+  color: darkslategrey;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #480b48;
+  font-weight: bold;
+}
+
+.header h1 {
+  font-size: 40px;
+  justify-content: center;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+p {
+  margin-top: 15px;
+}
+
+/* ---- */
+.navigation {
+  background-color: rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  gap: 30px;
+  position: absolute;
+  right: 90px;
+}
+
+.navigation a {
+  color: #000;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.navigation a:hover {
+  color: #454c53;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+}
+
+.left {
+  margin-right: 50px;
+}
+
+.hero .right {
+  text-align: justify;
+  background-color: #c9cdd2;
+  margin: 0px;
+  padding: 30px;
+  border: 1px black;
+  border-radius: 10px;
+  font-family: Raleway, sans-serif;
+}
+
+/* shadowing for UDOT image / text */
+.responsive-cell-block {
+  min-height: 75px;
+}
+
+.text-blk {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  line-height: 25px;
+}
+
+.responsive-container-block {
+  min-height: 75px;
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0px;
+  margin-right: 2%;
+  margin-bottom: 0px;
+  margin-left: 2%;
+  justify-content: space-evenly;
+}
+
+.team-head-text {
+  font-size: 48px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.team-head-text {
+  line-height: 50px;
+  width: 100%;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 50px;
+  margin-left: 0px;
+}
+
+.container {
+  max-width: 1380px;
+  margin-top: 60px;
+  margin-right: auto;
+  margin-bottom: 30px;
+  margin-left: auto;
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+}
+
+.card {
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 20px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  padding-right: 10px;
+  padding-bottom: 30px;
+  padding-left: 10px;
+}
+
+.card-container {
+  width: 200px;
+  margin-top: 0px;
+  margin-right: 10px;
+  margin-bottom: 25px;
+  margin-left: 10px;
+}
+
+.name {
+  margin-top: 20px;
+  margin-right: 0px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.position {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+}
+
+.feature-text {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 20px;
+  margin-left: 0px;
+  color: rgb(122, 122, 122);
+  line-height: 30px;
+}
+
+.social-icons {
+  width: 70px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.team-image-wrapper {
+  clip-path: circle(50% at 50% 50%);
+  width: 130px;
+  height: 130px;
+}
+
+.team-member-image {
+  max-width: 100%;
+}
+
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.wk-desk-1 {
+  width: 8.333333%;
+}
+
+.wk-desk-2 {
+  width: 16.666667%;
+}
+
+.wk-desk-3 {
+  width: 25%;
+}
+
+.wk-desk-4 {
+  width: 33.333333%;
+}
+
+.wk-desk-5 {
+  width: 41.666667%;
+}
+
+.wk-desk-6 {
+  width: 50%;
+}
+
+.wk-desk-7 {
+  width: 58.333333%;
+}
+
+.wk-desk-8 {
+  width: 66.666667%;
+}
+
+.wk-desk-9 {
+  width: 75%;
+}
+
+.wk-desk-10 {
+  width: 83.333333%;
+}
+
+.wk-desk-11 {
+  width: 91.666667%;
+}
+
+.wk-desk-12 {
+  width: 100%;
+}
+
+.site-footer {
+  background-color: #26272b;
+  padding: 45px 0 20px;
+  font-size: 15px;
+  line-height: 24px;
+  color: #FFFFFF;
+  text-align: center;
+  background-image: url('media/.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.site-footer hr {
+  border-top-color: #bbb;
+  opacity: 0.5
+}
+
+.site-footer hr.small {
+  margin: 20px 0
+}
+
+.site-footer a {
+  color: #FFFFFF;
+}
+
+.site-footer a:hover {
+  color: #c9cdd2;
+  text-decoration: none;
+}
+
+.copyright-text {
+  margin: 0
+}
+
+@media (max-width:991px) {
+  .site-footer [class^=col-] {
+    margin-bottom: 30px
+  }
+}
+
+@media (max-width:767px) {
+  .site-footer {
+    padding-bottom: 0
+  }
+
+  .site-footer .copyright-text {
+    text-align: center
+  }
+}

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigate Room</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./media/favicon-32x32.png" type="image/png">
+
+</head>
+
+<body>
+    <!-- Header and navbar for each page-->
+    <!-- Header image and text -->
+    <div class="header">
+        <div class="headertext">
+            <h1>Indoor Navigation System</h1>
+        </div>
+    </div>
+
+    <!-- Navigation bar text, https://www.youtube.com/watch?v=e5wjLZzMmYM for html -->
+    <div id="navbar">
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="./index.html">Home</a></li>
+                <li><a id=current href="./navigation.html">Navigate Room</a></li>
+                <li><a href="./teacher.html">Find Teacher</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </div>
+    <title>Indoor Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .navbar a:hover {
+            color: #ddd;
+        }
+
+        .form-container label {
+            font-size: 16px;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #555;
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .result-section h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .result-table th,
+        .result-table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .result-table th {
+            background-color: #333;
+            color: white;
+        }
+
+        .blueprint,
+        .key-pictures,
+        .direction-image {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .key-pictures img,
+        .direction-image img {
+            width: 550px;
+            height: 550px;
+            border-radius: 8px;
+            margin: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back-button button:hover {
+            background-color: #555;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div class="navbar">
+            <a href="#">Indoor Navigation</a>
+        </div>
+
+        <div class="container">
+            <div class="form-container">
+                <h2>Navigate Indoors</h2>
+                <label for="building">Select Building:</label>
+                <select id="building" onchange="updateOptions()">
+                    <option value="main-building">Main Building</option>
+                    <option value="campus">Campus</option>
+                </select>
+
+                <label for="start-point">Start Point:</label>
+                <select id="start-point"></select>
+
+                <label for="destination">Destination:</label>
+                <select id="destination"></select>
+
+                <button onclick="generateDirections()">Get Directions</button>
+            </div>
+
+            <div id="result-section" class="result-section">
+                <h3>Directions</h3>
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>Start Point</th>
+                            <th>Destination</th>
+                            <th>Instructions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-table-body"></tbody>
+                </table>
+                <div class="direction-image">
+                    <h3>Direction Image</h3>
+                    <img id="direction-img" src="" alt="place holder">
+                </div>
+            </div>
+
+            <div class="back-button">
+                <button onclick="resetForm()">Back</button>
+            </div>
+        </div>
+
+        <script>   const options = {
+                "main-building": {
+                    startPoints: ["Entrance", "Principal Office", "Meeting Hall", "Pu staff", "Gent's Toilet", "Computer Lab"],
+                    destinations: ["Entrance", "Principal Office", "Meeting Hall", "Pu staff", "Steps", "Gent's Toilet", "Computer Lab"],
+                    directions: {
+                        "Entrance-Principal Office": {
+                            instruction: "Entrance Start at the Portico Move straight through the Lounge Turn right towards the Lobby. Enter the Principal’s Office.",
+                            directionImage: "media/prince.jpg",
+                        },
+                        "Entrance-Meeting Hall": {
+                            instruction: "Entrance Start at the Portico Move straight through the Lounge Turn right towards the Lobby Walk past the Principal’s Office Reach the Meeting Hall.",
+                            directionImage: "media/meet.jpg",
+                        },
+                        "Entrance-Pu staff": {
+                            instruction: "Start at the Portico Move straight through the Entrance Lounge Turn left towards the left corridor Walk past the Class Room Enter the Staff Room.",
+                            directionImage: "media/pu_sta.jpg",
+                        },
+                        "Entrance-Gent's Toilet": {
+                            instruction: "Start at the Portico Move straight through the Entrance Lounge Turn left towards the left corridor Walk past the Staff Room Enter the Gents toilet.",
+                            directionImage: "media/gents.jpg",
+                        },
+                        "Entrance-Computer Lab": {
+                            instruction: "Using stairs or lift,go to the fourth floor exit from the lift,  then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/com.jpg",
+                        },
+                        "Principal Office-Entrance": {
+                            instruction: "Start at the Principal Office and move straight through the lounge, turn right towards the Entrance.",
+                            directionImage: "media/pu.jpg",
+                        },
+                        "Principal Office-Meeting Hall": {
+                            instruction: "Start at the Principal Office and move straight through the lounge, turn right towards the Entrance. Walk past the Principal’s Office and reach the Meeting Hall.",
+                            directionImage: "media/meet.jpg",
+                        },
+                        "Principal Office-Pu staff": {
+                            instruction: "Start at the Principal Office and move straight through the lounge, turn left towards the left corridor. Walk past the Class Room and enter the Staff Room.",
+                            directionImage: "media/pu_sta.jpg",
+                        },
+                        "Principal Office-Gent's Toilet": {
+                            instruction: "Start at the Principal Office and move straight through the lounge, turn left towards the left corridor. Walk past the Staff Room and enter the Gents toilet.",
+                            directionImage: "media/gents.jpg",
+                        },
+                        "Principal Office-Computer Lab": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Meeting Hall-Entrance": {
+                            instruction: "Start at the Meeting Hall and move straight through the lounge, turn right towards the Entrance.",
+                            directionImage: "media/pu.jpg",
+                        },
+                        "Meeting Hall-Principal Office": {
+                            instruction: "Start at the Meeting Hall and move straight through the lounge, turn right towards the Entrance. Walk past the Principal’s Office and reach the Meeting Hall.",
+                            directionImage: "media/meet.jpg",
+                        },
+                        "Meeting Hall-Pu staff": {
+                            instruction: "Start at the Meeting Hall and move straight through the lounge, turn left towards the left corridor. Walk past the Class Room and enter the Staff Room.",
+                            directionImage: "media/pu_sta.jpg",
+                        },
+                        "Meeting Hall-Gent's Toilet": {
+                            instruction: "Start at the Meeting Hall and move straight through the lounge, turn left towards the left corridor. Walk past the Staff Room and enter the Gents toilet.",
+                            directionImage: "media/gents.jpg",
+                        },
+                        "Meeting Hall-Computer Lab": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Pu staff-Entrance": {
+                            instruction: "Start at the Staff Room and move straight through the lounge, turn right towards the Entrance.",
+                            directionImage: "media/pu.jpg",
+                        },
+                        "Pu staff-Principal Office": {
+                            instruction: "Start at the Staff Room and move straight through the lounge, turn right towards the Entrance. Walk past the Principal’s Office and reach the Meeting Hall.",
+                            directionImage: "media/meet.jpg",
+                        },
+                        "Pu staff-Meeting Hall": {
+                            instruction: "Start at the Staff Room and move straight through the lounge, turn left towards the left corridor. Walk past the Class Room and enter the Staff Room.",
+                            directionImage: "media/pu_sta.jpg",
+                        },
+                        "Pu staff-Gent's Toilet": {
+                            instruction: "Start at the Staff Room and move straight through the lounge, turn left towards the left corridor. Walk past the Staff Room and enter the Gents toilet.",
+                            directionImage: "media/gents.jpg",
+                        },
+                        "Pu staff-Computer Lab": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Steps-Entrance": {
+                            instruction: "Start at the Steps and move straight through the lounge, turn right towards the Entrance.",
+                            directionImage: "media/pu.jpg",
+                        },
+                        "Steps-Principal Office": {
+                            instruction: "Start at the Steps and move straight through the lounge, turn right towards the Entrance. Walk past the Principal’s Office and reach the Meeting Hall.",
+                            directionImage: "media/meet.jpg",
+                        },
+                        "Steps-Pu staff": {
+                            instruction: "Start at the Steps and move straight through the lounge, turn left towards the left corridor. Walk past the Class Room and enter the Staff Room.",
+                            directionImage: "media/pu_sta.jpg",
+                        },
+                        "Steps-Gent's Toilet": {
+                            instruction: "Start at the Steps and move straight through the lounge, turn left towards the left corridor. Walk past the Staff Room and enter the Gents toilet.",
+                            directionImage: "media/gents.jpg",
+
+
+                        },
+                        "Steps-Computer Lab": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Gent's Toilet-Entrance": {
+                            instruction: "Start at the Gents toilet and move straight through the lounge, turn right towards the Entrance.",
+                            directionImage: "media/pu.jpg",
+                        },
+                        "Gent's Toilet-Principal Office": {
+                            instruction: "Start at the Gents toilet and move straight through the lounge, turn right towards the Entrance. Walk past the Principal’s Office and reach the Meeting Hall.",
+                            directionImage: "media/meet.jpg",
+                        },
+                        "Gent's Toilet-Pu staff": {
+                            instruction: "Start at the Gents toilet and move straight through the lounge, turn left towards the left corridor. Walk past the Class Room and enter the Staff Room.",
+                            directionImage: "media/pu_sta.jpg",
+                        },
+                        "Gent's Toilet-Meeting Hall": {
+                            instruction: "Start at the Gents toilet and move straight through the lounge, turn left towards the left corridor. Walk past the Staff Room and enter the Gents toilet.",
+                            directionImage: "media/gents.jpg",
+                        },
+                        "Gent's Toilet-Computer Lab": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Computer Lab-Entrance": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Computer Lab-Principal Office": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Computer Lab-Pu staff": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                        },
+                        "Computer Lab-Meeting Hall": {
+                            instruction: "Using stairs or lift, exit from the lift,go the ground foolr then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+                        "Computer Lab-Gent's Toilet": {
+                            instruction: "Using stairs or lift, exit from the lift, then take a left and walk straight towards the staircase. Walk up, and on the right side, the door to the computer lab is located.",
+                            directionImage: "media/computer_lab.jpg",
+                        },
+
+                    }
+                },
+            };
+
+
+
+
+
+
+
+            function updateOptions() {
+                const building = document.getElementById("building").value;
+                const startPointSelect = document.getElementById("start-point");
+                const destinationSelect = document.getElementById("destination");
+
+                startPointSelect.innerHTML = options[building].startPoints
+                    .map(point => `<option value="${point}">${point}</option>`)
+                    .join("");
+                destinationSelect.innerHTML = options[building].destinations
+                    .map(point => `<option value="${point}">${point}</option>`)
+                    .join("");
+            }
+
+            function generateDirections() {
+                const building = document.getElementById("building").value;
+                const startPoint = document.getElementById("start-point").value;
+                const destination = document.getElementById("destination").value;
+
+
+                const directionKey = `${startPoint}-${destination}`;
+                const directionDetails = options[building].directions[directionKey];
+
+                document.getElementById("result-section").style.display = "block";
+                document.getElementById("result-table-body").innerHTML = `
+                          <tr>
+                              <td>${startPoint}</td>
+                              <td>${destination}</td>
+                              <td>${directionDetails?.instruction || "Directions not available."}</td>
+                          </tr>
+                      `;
+
+                document.getElementById("direction-img").src = directionDetails?.directionImage || "";
+            }
+
+            function resetForm() {
+                document.getElementById("result-section").style.display = "none";
+            }
+
+            window.onload = updateOptions;
+        </script>
+        <footer class="site-footer">
+            <hr>
+            <div class="row">
+                <p class="copyright-text">Copyright &copy; 2025 All Rights Reserved by
+                    <a href="#">BGS</a>.
+                </p>
+            </div>
+        </footer>
+    </body>
+
+</html>

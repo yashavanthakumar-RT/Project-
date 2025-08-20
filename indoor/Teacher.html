@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Location Finder</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Fontawesome link: Font Awesome Intro https://www.w3schools.com/icons/fontawesome_icons_intro.asp -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="icon" href="./media/favicon-32x32.png" type="image/png">
+
+</head>
+
+<body>
+    <!-- Header and navbar for each page-->
+    <!-- Header image and text -->
+    <div class="header">
+        <div class="headertext">
+            <h1>Indoor Navigation System</h1>
+        </div>
+    </div>
+
+    <!-- Navigation bar text, https://www.youtube.com/watch?v=e5wjLZzMmYM for html -->
+    <div id="navbar">
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./navigation.html">Navigate Room</a></li>
+                <li><a id=current href="./Teacher.html">Find Teacher</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </div>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Teacher Location Finder</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 30px auto;
+                padding: 20px;
+                background-color: rgba(255, 255, 255, 0.9);
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .navbar {
+                background-color: #333;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .navbar h1 {
+                color: white;
+                font-size: 24px;
+                margin: 0;
+            }
+
+            .form-container label {
+                font-size: 16px;
+                display: block;
+                margin: 10px 0 5px;
+            }
+
+            .form-container select,
+            .form-container input[type="time"],
+            .form-container button {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .form-container button {
+                color: white;
+                background-color: #333;
+                border: none;
+                cursor: pointer;
+            }
+
+            .form-container button:hover {
+                background-color: #555;
+            }
+
+            #resultDisplay {
+                margin-top: 20px;
+                font-size: 18px;
+                text-align: center;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+
+            th {
+                background-color: #333;
+                color: white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="navbar">
+            <h1>Teacher Location Finder</h1>
+        </div>
+
+        <div class="container">
+            <div class="form-container">
+                <label for="teacherSelect">Select Teacher:</label>
+                <select id="teacherSelect">
+                    <option value="">Select Teacher</option>
+                </select>
+
+                <label for="daySelect">Select Day:</label>
+                <select id="daySelect">
+                    <option value="">Select Day</option>
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                </select>
+
+                <label for="timeInput">Select Time:</label>
+                <input type="time" id="timeInput">
+
+                <button onclick="findTeacherLocation()">Find Location</button>
+            </div>
+
+            <div id="resultDisplay"></div>
+
+            <table id="timetableDisplay" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Room</th>
+                        <th>Subject</th>
+                        <th>section</th>
+                        <th>floor</th>
+                    </tr>
+                </thead>
+                <tbody id="timetableBody"></tbody>
+            </table>
+        </div>
+
+        <script>
+            const timetableData = {
+                'Mrs.Prapulla gowda': {
+                    monday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'B', subject: 'PHP', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'A', subject: 'PHP', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'D', subject: 'PHP', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'C', subject: 'PHP', floor: '3rd' }
+                    ],
+                    Tuesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'C', subject: 'PHP', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'B', subject: 'PHP', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'E', subject: 'PHP', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'A', subject: 'PHP', floor: '3rd' }
+                    ],
+                    wednesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'E', subject: 'PHP', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'D', subject: 'PHP', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'A', subject: 'PHP', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'B', subject: 'PHP', floor: '3rd' }
+                    ],
+                    thursday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'C', subject: 'PHP', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'A', subject: 'PHP', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'E', subject: 'PHP', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'D', subject: 'PHP', floor: '3rd' }
+                    ],
+                    friday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'D', subject: 'PHP', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'C', subject: 'PHP', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'E', subject: 'PHP', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'B', subject: 'PHP', floor: '3rd' }
+                    ],
+
+
+
+                },
+                'Mrs.Priya K': {
+                    monday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'C', subject: 'DS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'B', subject: 'DS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'A', subject: 'DS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'D', subject: 'DS', floor: '3rd' }
+                    ],
+                    Tuesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'B', subject: 'DS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'C', subject: 'DS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'A', subject: 'DS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'E', subject: 'DS', floor: '3rd' }
+                    ],
+                    wednesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'A', subject: 'DS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'E', subject: 'DS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'B', subject: 'DS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'D', subject: 'DS', floor: '3rd' }
+                    ],
+                    thursday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'D', subject: 'DS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'C', subject: 'DS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'A', subject: 'DS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'E', subject: 'DS', floor: '3rd' }
+                    ],
+                    friday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'C', subject: 'DS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'D', subject: 'DS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'B', subject: 'DS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'E', subject: 'DS', floor: '3rd' }
+                    ],
+
+
+
+                },
+                'Mrs.Swethanandini': {
+                    monday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'A', subject: 'AI', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'D', subject: 'AI', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'C', subject: 'AI', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'B', subject: 'AI', floor: '3rd' }
+                    ],
+                    Tuesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'E', subject: 'AI', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'A', subject: 'AI', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'B', subject: 'AI', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'C', subject: 'AI', floor: '3rd' }
+                    ],
+                    wednesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'D', subject: 'AI', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'B', subject: 'AI', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'E', subject: 'AI', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'A', subject: 'AI', floor: '3rd' }
+                    ],
+                    thursday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'A', subject: 'AI', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'E', subject: 'AI', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'D', subject: 'AI', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'C', subject: 'AI', floor: '3rd' }
+                    ],
+                    friday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'E', subject: 'AI', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'B', subject: 'AI', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'C', subject: 'AI', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'D', subject: 'AI', floor: '3rd' }
+                    ],
+                },
+                'Mrs. Manaseswari': {
+                    monday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'D', subject: 'WCMS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'C', subject: 'WCMS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'B', subject: 'WCMS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'A', subject: 'WCMS', floor: '3rd' }
+                    ],
+                    Tuesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'A', subject: 'WCMS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'E', subject: 'WCMS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'C', subject: 'WCMS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'B', subject: 'WCMS', floor: '3rd' }
+                    ],
+                    wednesday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'B', subject: 'WCMS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'A', subject: 'WCMS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'D', subject: 'WCMS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'E', subject: 'WCMS', floor: '3rd' }
+                    ],
+                    thursday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'E', subject: 'WCMS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'D', subject: 'WCMS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'C', subject: 'WCMS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'A', subject: 'WCMS', floor: '3rd' }
+                    ],
+                    friday: [
+                        { start: '09:00', end: '10:00', room: '10', section: 'B', subject: 'WCMS', floor: '3rd' },
+                        { start: '10:00', end: '11:00', room: '09', section: 'E', subject: 'WCMS', floor: '3rd' },
+                        { start: '11:10', end: '12:10', room: '13', section: 'D', subject: 'WCMS', floor: '3rd' },
+                        { start: '12:10', end: '01:10', room: '12', section: 'C', subject: 'WCMS', floor: '3rd' }
+                    ],
+                },
+
+
+            };
+            const teacherSelect = document.getElementById('teacherSelect');
+            Object.keys(timetableData).forEach(teacher => {
+                const option = document.createElement('option');
+                option.value = teacher;
+                option.textContent = teacher;
+                teacherSelect.appendChild(option);
+            });
+
+            function findTeacherLocation() {
+                const teacher = teacherSelect.value;
+                const day = document.getElementById('daySelect').value;
+                const time = document.getElementById('timeInput').value;
+
+                const resultDisplay = document.getElementById('resultDisplay');
+                const timetableBody = document.getElementById('timetableBody');
+                timetableBody.innerHTML = '';
+
+                if (!teacher || !day || !time) {
+                    resultDisplay.textContent = 'Please select all fields.';
+                    return;
+                }
+
+                // Check if the time is before 9:00 AM or after 4:30 PM
+                if (time < '09:00' || time > '16:30') {
+                    resultDisplay.textContent = 'Not Available';
+                    document.getElementById('timetableDisplay').style.display = 'none';
+                    return;
+                }
+
+                const teacherSchedule = timetableData[teacher][day] || [];
+                const currentLocation = teacherSchedule.find(slot =>
+                    time >= slot.start && time <= slot.end
+                );
+
+                if (currentLocation) {
+                    resultDisplay.innerHTML = `
+            <strong>${teacher}</strong> is in room number  
+            <strong>${currentLocation.room}</strong> 
+            teaching <strong>${currentLocation.subject} subject</strong>
+        `;
+
+                    teacherSchedule.forEach(slot => {
+                        const row = timetableBody.insertRow();
+                        row.insertCell(0).textContent = `${slot.start} - ${slot.end}`;
+                        row.insertCell(1).textContent = slot.room;
+                        row.insertCell(2).textContent = slot.subject;
+                        row.insertCell(3).textContent = slot.section;
+                        row.insertCell(4).textContent = slot.floor;
+
+                    });
+                    document.getElementById('timetableDisplay').style.display = 'table';
+                } else {
+                    resultDisplay.textContent = `${teacher} is in staff room.`;
+                }
+            }
+
+        </script>
+
+
+        <footer class="site-footer">
+            <hr>
+            <div class="row">
+                <p class="copyright-text">Copyright &copy; 2025 All Rights Reserved by
+                    <a href="#">BGS</a>.
+                </p>
+            </div>
+        </footer>
+    </body>
+
+    </html>
